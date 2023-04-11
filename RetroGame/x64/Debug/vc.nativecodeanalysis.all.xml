@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?><DEFECTS><DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\lujsi\source\repos\RetroSraka\RetroSraka\</FILEPATH>
+      <FILENAME>RetroGame.cpp</FILENAME>
+      <LINE>57</LINE>
+      <COLUMN>19</COLUMN>
+    </SFA>
+    <DEFECTCODE>6282</DEFECTCODE>
+    <DESCRIPTION>Incorrect operator.</DESCRIPTION>
+    <FUNCTION>Game::init</FUNCTION>
+    <DECORATED>?init@Game@@QEAA_NPEBDHHHH_N@Z</DECORATED>
+    <FUNCLINE>10</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\lujsi\source\repos\RetroSraka\RetroSraka\</FILEPATH>
+      <FILENAME>RetroGame.cpp</FILENAME>
+      <LINE>61</LINE>
+      <COLUMN>19</COLUMN>
+    </SFA>
+    <DEFECTCODE>6282</DEFECTCODE>
+    <DESCRIPTION>Incorrect operator.</DESCRIPTION>
+    <FUNCTION>Game::init</FUNCTION>
+    <DECORATED>?init@Game@@QEAA_NPEBDHHHH_N@Z</DECORATED>
+    <FUNCLINE>10</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT></DEFECTS>
