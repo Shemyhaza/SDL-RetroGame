@@ -1,8 +1,19 @@
 #include "RetroGame.h"
+#include "TextureManager.h"
+#include "GameObject.h"
+#include "Map.h"
 
-SDL_Texture* playerTex = nullptr;
-SDL_Texture* mapTex = nullptr;
-SDL_Rect srcR, destR = { 650, 320, 64, 64 };
+#include "ECS.h"
+#include "Components.h"
+
+GameObject* player;
+GameObject* enemy;
+Map* map;
+
+SDL_Renderer* Game::renderer = nullptr;
+
+Manager manager;
+auto& newPlayer(manager.addEntity());
 
 Game::Game() {}
 Game::~Game() {}
@@ -34,31 +45,19 @@ bool Game::init(const char* title, int xPos, int yPos, int width, int height, bo
 			std::cout << "Renderer created!.." << std::endl;
 		}
 
-		SDL_Surface* tmpSurface = IMG_Load("mainPlayer.bmp");
-		SDL_Surface* tmpSurfaceB = IMG_Load("pixelArt.bmp");
+		player = new GameObject("assets/mainPlayer.bmp", 650, 320);
+		enemy = new GameObject("assets/enemy_one.bmp", 0, 0);
+		map = new Map();
 
-		if (tmpSurface == nullptr || tmpSurfaceB == nullptr) {
-			std::cout << "Cannot load surface!.." << SDL_GetError() << std::endl;
-			return false;
-		}
-		else { std::cout << "Surface loaded!.." << std::endl; }
+		newPlayer.addComponent<PositionComponent>();
 
-		playerTex = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-		mapTex = SDL_CreateTextureFromSurface(renderer, tmpSurfaceB);
-
-		if (playerTex == nullptr || mapTex == nullptr) {
-			std::cout << "Cannot create Texture from surface!.." << SDL_GetError() << std::endl;
-			return false;
-		}
-		else { std::cout << "Textures loaded!.." << std::endl; }
-		SDL_FreeSurface(tmpSurfaceB);
-		SDL_FreeSurface(tmpSurface);
-		
-		return isRunning = true;
+		isRunning = true;
+		return isRunning;
 	}
 	else { 
 		std::cout << "Cannot initialise SDL subsystems!.." << SDL_GetError() << std::endl;
-		return isRunning = false; 
+		isRunning = false;
+		return isRunning;
 	}
 }
 
@@ -86,6 +85,10 @@ void Game::handleEvents() {
 
 void Game::update() {
 
+	player->updateObj();
+	enemy->updateObj();
+	manager.update();
+	std::cout << newPlayer.getComponent<PositionComponent>().x() << "," << newPlayer.getComponent<PositionComponent>().y() << std::endl;
 }
 
 
@@ -100,8 +103,9 @@ void Game::render() {
 	const float speed = deltaTime; 
 
 	SDL_RenderClear(renderer);
-	SDL_RenderCopy(renderer, mapTex, NULL, NULL);
-	SDL_RenderCopy(renderer, playerTex, NULL, &destR);
+	map->drawMap();
+	player->renderObj();
+	enemy->renderObj();
 
 	const uint8* state = SDL_GetKeyboardState(NULL);
 
@@ -111,6 +115,7 @@ void Game::render() {
 	int stateUp = state[SDL_SCANCODE_UP] ? 1 : 0;
 	int stateDown = state[SDL_SCANCODE_DOWN] ? 1 : 0;
 
+	/*
 	int stateValue = stateRight * 8 + stateLeft * 4 + stateUp * 2 + stateDown * 1; 
 	switch (stateValue) {
 	case 10:
@@ -152,6 +157,7 @@ void Game::render() {
 	default:
 		break;
 	}
+	*/
 	SDL_RenderPresent(renderer);
 	lastTime = currentTime;
 }
